@@ -1,11 +1,6 @@
 ##项目文档
 ---
 
-#### `clone`项目
-```bash
-git clone ssh://devtfs.cmit.local:22/DefaultCollection/Back-End%20Team/_git/my-gin-go
-```
-
 #### `copy`并修改配置文件
 ```bash
 cd my-gin-go
@@ -66,13 +61,6 @@ air
 ```
 
 #### `docker`部署项目
-##### 项目部署路径
-```bash
-# 后端
-/home/go/src/my-gin-go
-# 前端
-/home/web/fantasy-web
-```
 ##### `docker-compose`一键部署并启动项目
 ```bash
 # 使用docker-compose启动四个容器
@@ -82,6 +70,3 @@ docker-compose up --build
 # 使用docker-compose 后台启动
 docker-compose up -d
 ```
-
-#### `Demo`地址
-> [AI平台](http://47.112.199.203:9999)
