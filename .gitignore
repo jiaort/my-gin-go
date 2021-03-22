@@ -1,0 +1,14 @@
+.idea/
+logs/*
+uploads/*
+python/detection/*
+tmp/*
+
+.DS_Store
+config.yaml
+latest_log
+go.sum
+detected.png
+main
+.idea
+.vscode

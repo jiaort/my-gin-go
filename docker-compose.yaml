@@ -1,0 +1,72 @@
+version: "3"
+
+networks:
+  network:
+    ipam:
+      driver: default
+      config:
+        - subnet: '177.7.0.0/16'
+
+services:
+  server:
+    build:
+      context: ./
+      dockerfile: ./dockerfile
+    container_name: my-gin-go
+    restart: always
+    ports:
+      - '8888:8888'
+    depends_on:
+      - mysql
+      - redis
+    links:
+      - mysql
+      - redis
+    volumes:
+      - /home/go/src/my-gin-go:/go/src/my-gin-go
+    networks:
+      network:
+        ipv4_address: 177.7.0.12
+
+  mysql:
+    image: mysql:5.7.29
+    container_name: fantasy-mysql
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: always
+    ports:
+      - 13306:3306
+    environment:
+      MYSQL_DATABASE: 'fantasy'
+      MYSQL_ROOT_PASSWORD: 'qwer1234'
+    volumes:
+      - /var/run/mysql:/var/lib/mysql
+    networks:
+      network:
+        ipv4_address: 177.7.0.13
+
+  redis:
+    image: redis:4.0.9
+    container_name: fantasy-redis
+    restart: always
+    ports:
+      - '16379:6379'
+    networks:
+      network:
+        ipv4_address: 177.7.0.14
+
+  nginx:
+    image: nginx:latest
+    container_name: fantasy-nginx
+    depends_on:
+      - server
+    links:
+      - server
+    volumes:
+      - /home/web/fantasy-web/dist:/opt/dist
+      - /home/go/src/my-gin-go/.docker-compose/nginx/conf.d:/etc/nginx/conf.d
+      - /home/go/src/my-gin-go/.docker-compose/nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "9999:9999"
+    networks:
+      network:
+        ipv4_address: 177.7.0.15
